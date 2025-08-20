@@ -42,11 +42,6 @@
     }
   },
   {
-    "type": "comment",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -203,6 +198,11 @@
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "extra": true
   },
   {
     "type": "identifier",

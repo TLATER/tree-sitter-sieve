@@ -33,11 +33,16 @@ module.exports = grammar({
     number: $ => /[[:digit:]]+[KMG]?/,
     tag: $ => seq(":", field("name", $.identifier)),
     stringList: $ => seq("[", seq($.string, repeat(seq(",", $.string))), "]"),
-    string: $ => seq('"', /[^[:cntrl:]"]*/, '"'), // TODO: escapes, multi-line
 
-    comment: $ => choice($._hashComment),
-    _bracketComment: $ => "/*", // TODO: Actual implementation
-    _hashComment: $=> token(seq("#", /[[:^cntrl:]]*/)),
+    string: $ => seq('"', repeat($._stringChars), '"'),
+    _stringChars: $ => token(choice(/[^"\\]/, /\\./)),
+
+    // TODO: Add multi-line literals
+
+    comment: $ => token(choice(
+      seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/"),
+      /#[^\r\n]*/
+    )),
     _whitespace: $ => /\s+/
   },
 

@@ -225,8 +225,11 @@
           "value": "\""
         },
         {
-          "type": "PATTERN",
-          "value": "[^[:cntrl:]\"]*"
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_stringChars"
+          }
         },
         {
           "type": "STRING",
@@ -234,31 +237,47 @@
         }
       ]
     },
-    "comment": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_hashComment"
-        }
-      ]
-    },
-    "_bracketComment": {
-      "type": "STRING",
-      "value": "/*"
-    },
-    "_hashComment": {
+    "_stringChars": {
       "type": "TOKEN",
       "content": {
-        "type": "SEQ",
+        "type": "CHOICE",
         "members": [
           {
-            "type": "STRING",
-            "value": "#"
+            "type": "PATTERN",
+            "value": "[^\"\\\\]"
           },
           {
             "type": "PATTERN",
-            "value": "[[:^cntrl:]]*"
+            "value": "\\\\."
+          }
+        ]
+      }
+    },
+    "comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "/*"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^*]*\\*+([^/*][^*]*\\*+)*"
+              },
+              {
+                "type": "STRING",
+                "value": "/"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": "#[^\\r\\n]*"
           }
         ]
       }

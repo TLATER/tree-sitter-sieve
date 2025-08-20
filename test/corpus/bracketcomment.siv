@@ -1,0 +1,19 @@
+command /* this is comment */ test /* this is another comment */ "argument";
+
+/* This is a comment*
+
+
+return;
+
+
+*/
+
+# This is a comment too
+
+#  		  aaaa
+
+a "
+aaaa\n\\
+\n
+\"
+";
