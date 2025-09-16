@@ -10,14 +10,28 @@ require "fileinto";
 #
 if header :is "Sender" "owner-ietf-mta-filters@imc.org"
 {
-  fileinto "filter";  # move to "filter" mailbox
+  fileinto "filter"; # move to "filter" mailbox
 }
 #
 # Keep all messages to or from people in my company
 #
 elsif address :DOMAIN :is ["From", "To"] "example.com"
 {
-  keep;  # keep in "In" mailbox
+  keep; # keep in "In" mailbox
+}
+
+if allof (
+  address :all :contains [
+    # You should be exempt from spam, too
+    "To",
+    # CC
+    "Cc",
+    # BCC
+    "Bcc"
+  ] "you@example.com"
+)
+{
+  return;
 }
 
 #
@@ -25,17 +39,22 @@ elsif address :DOMAIN :is ["From", "To"] "example.com"
 # or it contains a subject known to be spam, file it away.
 #
 elsif anyof (
-  NOT address :all :contains
-  ["To", "Cc", "Bcc"] "me@example.com",
-  header :matches "subject"
-  ["*make*money*fast*", "*university*dipl*mas*"]
+  NOT address :all :contains ["To", "Cc", "Bcc"] "me@example.com",
+  header :matches "subject" ["*make*money*fast*", "*university*dipl*mas*"]
 )
 {
-  fileinto "spam";  # move to "spam" mailbox
+  fileinto "spam"; # move to "spam" mailbox
+  expire "day" 1;
+  return;
 }
 else
 {
   # Move all other (non-company) mail to "personal"
   # mailbox.
   fileinto "personal";
+}
+
+if anyof (NOT address :is "you@example.net", address :domain :is "example.net")
+{
+  fileinto "examplefolk";
 }

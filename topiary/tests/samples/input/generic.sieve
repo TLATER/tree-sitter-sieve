@@ -20,6 +20,20 @@ elsif address :DOMAIN :is ["From", "To"] "example.com"
         keep;               # keep in "In" mailbox
         }
 
+if allof (
+    address :all :contains [
+    # You should be exempt from spam, too
+    "To",
+    # CC
+    "Cc",
+    # BCC
+        "Bcc"
+      ] "you@example.com"
+  )
+{
+  return;
+}
+
 #
 # Try and catch unsolicited email.  If a message is not to me,
 # or it contains a subject known to be spam, file it away.
@@ -39,3 +53,7 @@ else
         # mailbox.
         fileinto "personal";
         }
+
+if anyof (NOT address :is "you@example.net", address :domain :is "example.net") {
+  fileinto "examplefolk";
+}
