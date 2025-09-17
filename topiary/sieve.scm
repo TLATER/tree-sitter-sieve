@@ -9,7 +9,8 @@
 
 (testList
  "(" @append_empty_softline @append_indent_start
- ((test) "," @append_spaced_softline)*
+ (comment)?
+ ((test) "," @append_spaced_softline (comment)?)*
  ")" @prepend_empty_softline @prepend_indent_end)
 
 (test
