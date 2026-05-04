@@ -34,8 +34,7 @@ module.exports = grammar({
     tag: $ => seq(":", field("name", $.identifier)),
     stringList: $ => seq("[", seq($.string, repeat(seq(",", $.string))), "]"),
 
-    string: $ => seq('"', repeat($._stringChars), '"'),
-    _stringChars: $ => token(choice(/[^"\\]/, /\\./)),
+    string: $ => token(seq('"', repeat(choice(/[^"\\]/, /\\./)), '"')),
 
     // TODO: Add multi-line literals
 
