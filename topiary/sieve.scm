@@ -27,7 +27,7 @@
  (comment)* @do_nothing)
 
 ((_)
- (comment) @prepend_space)
+ (comment) @prepend_input_softline)
 
 (stringList
  "[" @append_empty_softline @append_indent_start

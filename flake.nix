@@ -44,6 +44,7 @@
           packages = [
             pkgs.nodejs
             pkgs.tree-sitter
+            pkgs.topiary
           ];
         };
     };
